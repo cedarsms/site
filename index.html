@@ -872,7 +872,12 @@
 
       <!-- Form -->
       <div>
-        <form id="contactForm" action="/api/contact" method="post" data-endpoint="/api/contact" novalidate>
+        <form action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="e81ce0b3-30f8-4429-b069-d6ba7e082f25">
+          <input type="hidden" name="subject" value="New message from Cedars Maintenance Solutions website">
+          <input type="hidden" name="from_name" value="Cedars Maintenance Solutions Website">
+          <input type="checkbox" name="botcheck" style="display:none;">
+
           <div class="form-row">
             <div class="field">
               <label for="firstName">First Name</label>
@@ -883,27 +888,25 @@
               <input id="lastName" name="lastName" type="text" placeholder="Last Name" autocomplete="family-name">
             </div>
           </div>
+
           <div class="field">
             <label for="email">Email <span>*</span></label>
             <input id="email" name="email" type="email" placeholder="Email Address" autocomplete="email" required>
           </div>
+
           <div class="field">
-            <label for="subject">Subject</label>
-            <input id="subject" name="subject" type="text" placeholder="Subject" autocomplete="organization-title">
+            <label for="subjectLine">Subject</label>
+            <input id="subjectLine" name="message_subject" type="text" placeholder="Subject">
           </div>
+
           <div class="field">
             <label for="message">Your Message <span>*</span></label>
             <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
           </div>
-          <div class="field sr-only" aria-hidden="true">
-            <label for="website">Website</label>
-            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
-          </div>
+
           <button type="submit" class="btn-submit">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
             Submit Form
           </button>
-          <p id="formStatus" class="form-status" aria-live="polite"></p>
         </form>
       </div>
 
@@ -956,73 +959,6 @@
 <script>
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
-  const contactForm = document.getElementById('contactForm');
-  const formStatus = document.getElementById('formStatus');
-
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', String(isOpen));
-    });
-  }
-
-  function closeMobile() {
-    if (!mobileMenu || !menuBtn) return;
-    mobileMenu.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded', 'false');
-  }
-
-  async function submitContactForm(event) {
-    event.preventDefault();
-    if (!contactForm) return;
-
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-    const endpoint = contactForm.dataset.endpoint || contactForm.getAttribute('action') || '/api/contact';
-    const originalButtonHtml = submitButton.innerHTML;
-
-    formStatus.textContent = '';
-    formStatus.className = 'form-status';
-
-    if (!contactForm.reportValidity()) {
-      formStatus.textContent = 'Please complete the required fields.';
-      formStatus.classList.add('is-error');
-      return;
-    }
-
-    submitButton.disabled = true;
-    submitButton.textContent = 'Sending...';
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(contactForm)
-      });
-
-      let payload = {};
-      try {
-        payload = await response.json();
-      } catch (_) {}
-
-      if (!response.ok || payload.ok === false) {
-        throw new Error(payload.message || 'The message could not be sent. Please try again.');
-      }
-
-      contactForm.reset();
-      formStatus.textContent = payload.message || 'Your message has been sent successfully.';
-      formStatus.classList.add('is-success');
-    } catch (error) {
-      formStatus.textContent = error.message || 'The message could not be sent. Please try again.';
-      formStatus.classList.add('is-error');
-    } finally {
-      submitButton.disabled = false;
-      submitButton.innerHTML = originalButtonHtml;
-    }
-  }
-
-  if (contactForm) {
-    contactForm.addEventListener('submit', submitContactForm);
-  }
 </script>
 
 </body>
