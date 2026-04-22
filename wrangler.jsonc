@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "cedarsms-site",
+  "compatibility_date": "2026-04-22",
+  "pages_build_output_dir": ".",
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "allowed_sender_addresses": [
+        "noreply@cedarsms.com"
+      ]
+    }
+  ],
+  "vars": {
+    "CONTACT_TO": "info@cedarsms.com",
+    "CONTACT_FROM": "noreply@cedarsms.com",
+    "ALLOWED_ORIGINS": "https://cedarsms.com,https://www.cedarsms.com"
+  }
+}
